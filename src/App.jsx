@@ -167,14 +167,14 @@ return (
             rtl={language === "ur"}
             pauseOnFocusLoss
             draggable
-            pauseOnHover
+pauseOnHover
             className="z-[9999]"
-className="z-[9999]"
           />
         </div>
         </BrowserRouter>
       </AppContext.Provider>
     </AuthProvider>
   );
+}
 
 export default App;
