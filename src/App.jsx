@@ -1,23 +1,23 @@
-import { Route, Router, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { createContext, useContext, useState } from "react";
-import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import LoginPage from "@/components/pages/LoginPage";
-import ProfilePage from "@/components/pages/ProfilePage";
-import AdminDashboard from "@/components/pages/AdminDashboard";
 import BottomNav from "@/components/organisms/BottomNav";
 import Header from "@/components/organisms/Header";
 import Error from "@/components/ui/Error";
+import AdminDashboard from "@/components/pages/AdminDashboard";
 import CheckoutPage from "@/components/pages/CheckoutPage";
+import LoginPage from "@/components/pages/LoginPage";
 import SearchPage from "@/components/pages/SearchPage";
 import WishlistPage from "@/components/pages/WishlistPage";
 import CategoriesPage from "@/components/pages/CategoriesPage";
+import ProfilePage from "@/components/pages/ProfilePage";
 import AccountPage from "@/components/pages/AccountPage";
 import CartPage from "@/components/pages/CartPage";
 import HomePage from "@/components/pages/HomePage";
 import ProductDetailPage from "@/components/pages/ProductDetailPage";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 // Context Providers
 
@@ -119,7 +119,7 @@ function App() {
 return (
     <AuthProvider>
       <AppContext.Provider value={contextValue}>
-        <Router>
+        <BrowserRouter>
         <div className={`min-h-screen bg-background text-white font-body ${language === "ur" ? "rtl" : ""}`}>
           <Header />
 <main className="pb-20 pt-16">
@@ -169,12 +169,12 @@ return (
             draggable
             pauseOnHover
             className="z-[9999]"
+className="z-[9999]"
           />
         </div>
-        </Router>
+        </BrowserRouter>
       </AppContext.Provider>
     </AuthProvider>
   );
-}
 
 export default App;
