@@ -19,9 +19,9 @@ function LoginPage() {
     }
   }, [isAuthenticated, navigate])
 
-  const googleLogin = useGoogleLogin({
+const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-try {
+      try {
         // Validate token response
         if (!tokenResponse?.access_token) {
           throw new Error('Invalid token response');
