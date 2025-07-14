@@ -1,21 +1,29 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Route, Router, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import { motion, AnimatePresence } from "framer-motion";
-import { useState, createContext, useContext } from "react";
-
-// Layout Components
-import Header from "@/components/organisms/Header";
+import { AnimatePresence, motion } from "framer-motion";
+import React, { createContext, useContext, useState } from "react";
+import { AuthProvider } from "@/contexts/AuthContext";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import LoginPage from "@/components/pages/LoginPage";
+import ProfilePage from "@/components/pages/ProfilePage";
+import AdminDashboard from "@/components/pages/AdminDashboard";
 import BottomNav from "@/components/organisms/BottomNav";
-
-// Pages
-import HomePage from "@/components/pages/HomePage";
-import CategoriesPage from "@/components/pages/CategoriesPage";
-import ProductDetailPage from "@/components/pages/ProductDetailPage";
-import CartPage from "@/components/pages/CartPage";
+import Header from "@/components/organisms/Header";
+import Error from "@/components/ui/Error";
 import CheckoutPage from "@/components/pages/CheckoutPage";
 import SearchPage from "@/components/pages/SearchPage";
 import WishlistPage from "@/components/pages/WishlistPage";
+import CategoriesPage from "@/components/pages/CategoriesPage";
 import AccountPage from "@/components/pages/AccountPage";
+import CartPage from "@/components/pages/CartPage";
+import HomePage from "@/components/pages/HomePage";
+import ProductDetailPage from "@/components/pages/ProductDetailPage";
+
+// Context Providers
+
+// Layout Components
+
+// Pages
 
 // Context for global state
 const AppContext = createContext();
@@ -108,13 +116,13 @@ function App() {
     setUser
   };
 
-  return (
-    <AppContext.Provider value={contextValue}>
-      <Router>
+return (
+    <AuthProvider>
+      <AppContext.Provider value={contextValue}>
+        <Router>
         <div className={`min-h-screen bg-background text-white font-body ${language === "ur" ? "rtl" : ""}`}>
           <Header />
-          
-          <main className="pb-20 pt-16">
+<main className="pb-20 pt-16">
             <AnimatePresence mode="wait">
               <Routes>
                 <Route path="/" element={<HomePage />} />
@@ -122,11 +130,28 @@ function App() {
                 <Route path="/category/:categoryName" element={<CategoriesPage />} />
                 <Route path="/product/:id" element={<ProductDetailPage />} />
                 <Route path="/cart" element={<CartPage />} />
-<Route path="/checkout" element={<CheckoutPage />} />
+                <Route path="/checkout" element={<CheckoutPage />} />
                 <Route path="/search" element={<SearchPage />} />
                 <Route path="/search/camera" element={<SearchPage />} />
                 <Route path="/wishlist" element={<WishlistPage />} />
                 <Route path="/account" element={<AccountPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route 
+                  path="/profile" 
+                  element={
+                    <ProtectedRoute>
+                      <ProfilePage />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/admin" 
+                  element={
+                    <ProtectedRoute requireAdmin={true}>
+                      <AdminDashboard />
+                    </ProtectedRoute>
+                  } 
+                />
               </Routes>
             </AnimatePresence>
           </main>
@@ -146,8 +171,9 @@ function App() {
             className="z-[9999]"
           />
         </div>
-      </Router>
-    </AppContext.Provider>
+        </Router>
+      </AppContext.Provider>
+    </AuthProvider>
   );
 }
 

@@ -1,14 +1,16 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { useAuth } from "@/contexts/AuthContext";
+import { useApp } from "@/App";
 import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
 import SearchBar from "@/components/molecules/SearchBar";
-import { useApp } from "@/App";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { language, toggleLanguage, cart, user } = useApp();
+const { language, toggleLanguage, cart } = useApp();
+  const { user, isAdmin } = useAuth();
   const navigate = useNavigate();
 
   const cartItemsCount = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -75,14 +77,28 @@ const Header = () => {
               )}
             </Button>
 
+{/* Admin Panel - Only for admin */}
+            {isAdmin() && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate("/admin")}
+                className="text-accent hover:text-accent/80"
+                title="Admin Panel"
+              >
+                <ApperIcon name="Shield" className="w-5 h-5" />
+              </Button>
+            )}
+
             {/* Account */}
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => navigate("/account")}
+              onClick={() => navigate(user ? "/profile" : "/login")}
             >
               <ApperIcon name="User" className="w-5 h-5" />
             </Button>
+</Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -94,7 +110,6 @@ const Header = () => {
           >
             <ApperIcon name={isMenuOpen ? "X" : "Menu"} className="w-5 h-5" />
           </Button>
-        </div>
 
         {/* Mobile Search */}
         <div className="md:hidden pb-4">
