@@ -101,7 +101,7 @@ const { language, toggleLanguage, cart } = useApp();
           </div>
 
           {/* Mobile Menu Button */}
-          <Button
+<Button
             variant="ghost"
             size="sm"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -109,7 +109,6 @@ const { language, toggleLanguage, cart } = useApp();
           >
             <ApperIcon name={isMenuOpen ? "X" : "Menu"} className="w-5 h-5" />
           </Button>
-</Button>
         </div>
 
         {/* Mobile Search */}
