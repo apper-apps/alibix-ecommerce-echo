@@ -1,0 +1,70 @@
+@import "react-toastify/dist/ReactToastify.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #000000;
+  --secondary: #FF6B35;
+  --accent: #CFA75F;
+  --surface: #1A1A1A;
+  --background: #0A0A0A;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--background);
+  color: white;
+}
+
+.Toastify__toast-container {
+  top: 1em;
+  right: 1em;
+  width: 320px;
+}
+
+.Toastify__toast {
+  background: var(--surface);
+  color: white;
+  border-radius: 8px;
+  padding: 16px;
+  font-size: 14px;
+  min-height: 60px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.Toastify__toast-body {
+  padding: 0;
+  margin: 0;
+}
+
+.Toastify__progress-bar {
+  background: var(--secondary);
+}
+
+.Toastify__close-button {
+  color: white;
+  opacity: 0.7;
+}
+
+.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+.rtl .flex {
+  flex-direction: row-reverse;
+}
+
+@layer utilities {
+  .gradient-shimmer {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite linear;
+  }
+}

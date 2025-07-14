@@ -1,0 +1,83 @@
+[
+  {
+    "Id": 1,
+    "name": "Men Shoes",
+    "nameUrdu": "مردوں کے جوتے",
+    "slug": "men-shoes",
+    "icon": "Users",
+    "productCount": 45,
+    "banner": "/api/placeholder/800/300"
+  },
+  {
+    "Id": 2,
+    "name": "Women Shoes",
+    "nameUrdu": "خواتین کے جوتے",
+    "slug": "women-shoes",
+    "icon": "Heart",
+    "productCount": 38,
+    "banner": "/api/placeholder/800/300"
+  },
+  {
+    "Id": 3,
+    "name": "Kids Shoes",
+    "nameUrdu": "بچوں کے جوتے",
+    "slug": "kids-shoes",
+    "icon": "Baby",
+    "productCount": 22,
+    "banner": "/api/placeholder/800/300"
+  },
+  {
+    "Id": 4,
+    "name": "Heels",
+    "nameUrdu": "ہیلز",
+    "slug": "heels",
+    "icon": "Crown",
+    "productCount": 15,
+    "banner": "/api/placeholder/800/300"
+  },
+  {
+    "Id": 5,
+    "name": "Casual",
+    "nameUrdu": "کیژول",
+    "slug": "casual",
+    "icon": "Coffee",
+    "productCount": 28,
+    "banner": "/api/placeholder/800/300"
+  },
+  {
+    "Id": 6,
+    "name": "Mobile Accessories",
+    "nameUrdu": "موبائل ایکسیسریز",
+    "slug": "mobile-accessories",
+    "icon": "Smartphone",
+    "productCount": 67,
+    "banner": "/api/placeholder/800/300"
+  },
+  {
+    "Id": 7,
+    "name": "Kitchen",
+    "nameUrdu": "کچن",
+    "slug": "kitchen",
+    "icon": "ChefHat",
+    "productCount": 34,
+    "banner": "/api/placeholder/800/300"
+  },
+  {
+    "Id": 8,
+    "name": "Beauty",
+    "nameUrdu": "خوبصورتی",
+    "slug": "beauty",
+    "icon": "Sparkles",
+    "productCount": 29,
+    "banner": "/api/placeholder/800/300"
+  },
+  {
+    "Id": 9,
+    "name": "Electronics",
+    "nameUrdu": "الیکٹرانکس",
+    "slug": "electronics",
+    "icon": "Zap",
+    "productCount": 56,
+    "banner": "/api/placeholder/800/300"
+  }
+]
