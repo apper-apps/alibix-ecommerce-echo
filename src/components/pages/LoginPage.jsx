@@ -8,20 +8,25 @@ import ApperIcon from '@/components/ApperIcon'
 import { useAuth } from '@/contexts/AuthContext'
 import { useApp } from '@/App'
 
-const LoginPage = () => {
-  const navigate = useNavigate();
-  const { login, isAuthenticated, isAdmin } = useAuth();
-  const { language } = useApp();
-
+function LoginPage() {
+  const navigate = useNavigate()
+  const { login, isAuthenticated } = useAuth()
+  const { language } = useApp()
+  
   useEffect(() => {
     if (isAuthenticated()) {
-      navigate(isAdmin() ? '/admin' : '/profile');
+      navigate('/profile')
     }
-  }, [isAuthenticated, isAdmin, navigate]);
+  }, [isAuthenticated, navigate])
 
-const googleLogin = useGoogleLogin({
+  const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      try {
+try {
+        // Validate token response
+        if (!tokenResponse?.access_token) {
+          throw new Error('Invalid token response');
+        }
+
         // Fetch user info using the access token
         const userInfoResponse = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
           headers: {
@@ -29,7 +34,16 @@ const googleLogin = useGoogleLogin({
           },
         });
         
+        if (!userInfoResponse.ok) {
+          throw new Error(`Failed to fetch user info: ${userInfoResponse.status}`);
+        }
+        
         const userInfo = await userInfoResponse.json();
+        
+        // Validate user info
+        if (!userInfo || !userInfo.email) {
+          throw new Error('Invalid user information received');
+        }
         
         // Create response object compatible with existing login function
         const response = {
@@ -40,7 +54,7 @@ const googleLogin = useGoogleLogin({
         
         const userData = await login(response);
         
-        if (userData.email === 'alibix07@gmail.com') {
+        if (userData?.email === 'alibix07@gmail.com') {
           toast.success(language === 'ur' ? 'ایڈمن لاگ ان کامیاب' : 'Admin login successful');
           navigate('/admin');
         } else {
@@ -49,12 +63,14 @@ const googleLogin = useGoogleLogin({
         }
       } catch (error) {
         console.error('Google login error:', error);
-        toast.error(language === 'ur' ? 'لاگ ان ناکام' : 'Login failed');
+        const errorMessage = language === 'ur' ? 'لاگ ان ناکام' : 'Login failed';
+        toast.error(errorMessage);
       }
     },
     onError: (error) => {
       console.error('Google login error:', error);
-      toast.error(language === 'ur' ? 'Google لاگ ان ناکام' : 'Google login failed');
+      const errorMessage = language === 'ur' ? 'Google لاگ ان ناکام' : 'Google login failed';
+      toast.error(errorMessage);
     }
   });
 
