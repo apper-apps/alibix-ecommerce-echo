@@ -122,8 +122,9 @@ function App() {
                 <Route path="/category/:categoryName" element={<CategoriesPage />} />
                 <Route path="/product/:id" element={<ProductDetailPage />} />
                 <Route path="/cart" element={<CartPage />} />
-                <Route path="/checkout" element={<CheckoutPage />} />
+<Route path="/checkout" element={<CheckoutPage />} />
                 <Route path="/search" element={<SearchPage />} />
+                <Route path="/search/camera" element={<SearchPage />} />
                 <Route path="/wishlist" element={<WishlistPage />} />
                 <Route path="/account" element={<AccountPage />} />
               </Routes>

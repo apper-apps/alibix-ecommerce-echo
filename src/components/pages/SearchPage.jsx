@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 import ProductCard from "@/components/molecules/ProductCard";
 import SearchBar from "@/components/molecules/SearchBar";
 import Loading from "@/components/ui/Loading";
 import Error from "@/components/ui/Error";
 import Empty from "@/components/ui/Empty";
 import Button from "@/components/atoms/Button";
+import Input from "@/components/atoms/Input";
 import ApperIcon from "@/components/ApperIcon";
 import { useApp } from "@/App";
 import productService from "@/services/api/productService";
@@ -19,6 +21,10 @@ const SearchPage = () => {
   const [error, setError] = useState("");
   const [sortBy, setSortBy] = useState("default");
   const [priceRange, setPriceRange] = useState({ min: "", max: "" });
+  const [imageFile, setImageFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [isDragOver, setIsDragOver] = useState(false);
+  const fileInputRef = useRef(null);
   const { language } = useApp();
 
   const loadSearchResults = async () => {
@@ -79,12 +85,68 @@ const SearchPage = () => {
 
       setProducts(filteredProducts);
     }
-  }, [sortBy, priceRange]);
+}, [sortBy, priceRange]);
 
   const clearFilters = () => {
     setSortBy("default");
     setPriceRange({ min: "", max: "" });
     loadSearchResults();
+  };
+
+  const handleImageUpload = async () => {
+    if (!imageFile) return;
+
+    try {
+      setUploading(true);
+      setError("");
+      
+      // Simulate image processing and search
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Mock search results based on image
+      const imageSearchResults = await productService.searchByImage(imageFile);
+      setProducts(imageSearchResults);
+      
+      toast.success(language === "ur" ? "تصویر کی بنیاد پر پروڈکٹس ملے!" : "Products found based on your image!");
+    } catch (err) {
+      setError(err.message);
+      toast.error(language === "ur" ? "تصویر اپ لوڈ کرنے میں خرابی" : "Failed to upload image");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleFileSelect = (file) => {
+    if (file && file.type.startsWith('image/')) {
+      setImageFile(file);
+      setError("");
+    } else {
+      toast.error(language === "ur" ? "براہ کرم صرف تصویر کا فائل منتخب کریں" : "Please select an image file only");
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setIsDragOver(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    const file = e.dataTransfer.files[0];
+    handleFileSelect(file);
+  };
+
+  const clearImage = () => {
+    setImageFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   return (
@@ -102,10 +164,115 @@ const SearchPage = () => {
         <h1 className="text-3xl font-display font-bold text-white mb-4">
           {language === "ur" ? "تلاش کے نتائج" : "Search Results"}
         </h1>
-        
-        <div className="mb-4">
+<div className="mb-4">
           <SearchBar />
         </div>
+
+        {/* Camera Upload Interface */}
+        <motion.div
+          initial={{ y: 10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.1 }}
+          className="mb-6 p-6 bg-surface rounded-lg border border-white/10"
+        >
+          <div className="flex items-center gap-2 mb-4">
+            <ApperIcon name="Camera" className="w-5 h-5 text-accent" />
+            <h3 className="text-lg font-medium text-white">
+              {language === "ur" ? "تصویر سے تلاش کریں" : "Search with Image"}
+            </h3>
+          </div>
+
+          {!imageFile ? (
+            <div
+              className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+                isDragOver 
+                  ? 'border-secondary bg-secondary/10' 
+                  : 'border-white/20 hover:border-white/30'
+              }`}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+            >
+              <ApperIcon name="Upload" className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <p className="text-gray-300 mb-2">
+                {language === "ur" 
+                  ? "تصویر یہاں ڈراپ کریں یا کلک کر کے منتخب کریں" 
+                  : "Drop your image here or click to select"}
+              </p>
+              <p className="text-sm text-gray-500 mb-4">
+                {language === "ur" ? "PNG, JPG، JPEG (زیادہ سے زیادہ 10MB)" : "PNG, JPG, JPEG (Max 10MB)"}
+              </p>
+              <Button
+                variant="secondary"
+                onClick={() => fileInputRef.current?.click()}
+                className="mx-auto"
+              >
+                <ApperIcon name="ImagePlus" className="w-4 h-4 mr-2" />
+                {language === "ur" ? "تصویر منتخب کریں" : "Select Image"}
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between p-4 bg-background rounded-lg border border-white/10">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center">
+                    <ApperIcon name="Image" className="w-6 h-6 text-accent" />
+                  </div>
+                  <div>
+                    <p className="text-white font-medium">{imageFile.name}</p>
+                    <p className="text-sm text-gray-400">
+                      {(imageFile.size / 1024 / 1024).toFixed(2)} MB
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={clearImage}
+                  className="text-gray-400 hover:text-white"
+                >
+                  <ApperIcon name="X" className="w-4 h-4" />
+                </Button>
+              </div>
+              
+              <div className="flex gap-2">
+                <Button
+                  variant="accent"
+                  onClick={handleImageUpload}
+                  disabled={uploading}
+                  className="flex-1"
+                >
+                  {uploading ? (
+                    <>
+                      <ApperIcon name="Loader2" className="w-4 h-4 mr-2 animate-spin" />
+                      {language === "ur" ? "تلاش جاری ہے..." : "Searching..."}
+                    </>
+                  ) : (
+                    <>
+                      <ApperIcon name="Search" className="w-4 h-4 mr-2" />
+                      {language === "ur" ? "تصویر سے تلاش کریں" : "Search with Image"}
+                    </>
+                  )}
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={uploading}
+                >
+                  <ApperIcon name="RotateCcw" className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+          )}
+
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleFileSelect(e.target.files[0])}
+            className="hidden"
+          />
+        </motion.div>
 
         {query && (
           <p className="text-gray-400">
@@ -117,13 +284,22 @@ const SearchPage = () => {
             )}
           </p>
         )}
+
+        {imageFile && !uploading && products.length > 0 && (
+          <p className="text-gray-400 mb-4">
+            {language === "ur" ? "تصویر کی بنیاد پر ملنے والے نتائج" : "Results based on your image"}
+            <span className="ml-2">
+              ({products.length} {language === "ur" ? "آئٹمز ملے" : "items found"})
+            </span>
+          </p>
+        )}
       </motion.div>
 
-      {loading ? (
+{(loading || uploading) ? (
         <Loading type="products" />
       ) : error ? (
         <Error message={error} onRetry={loadSearchResults} />
-      ) : !query.trim() ? (
+      ) : !query.trim() && !imageFile ? (
         <Empty 
           icon="Search"
           title={language === "ur" ? "کچھ تلاش کریں" : "Start your search"}

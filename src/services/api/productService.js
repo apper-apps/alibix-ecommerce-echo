@@ -1,8 +1,8 @@
-import productsData from "@/services/mockData/products.json";
+import mockProducts from "@/services/mockData/products.json";
 
 class ProductService {
   constructor() {
-    this.products = [...productsData];
+    this.products = [...mockProducts];
   }
 
   async getAll() {
@@ -52,14 +52,24 @@ class ProductService {
     });
   }
 
-  async getFeatured() {
+async getFeatured() {
     return new Promise((resolve) => {
       setTimeout(() => {
         const featured = this.products
           .filter(p => p.discountedPrice && p.stock > 0)
           .slice(0, 8);
         resolve([...featured]);
-      }, 250);
+      }, 300);
+    });
+  }
+
+  async searchByImage(imageFile) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const shuffled = [...this.products].sort(() => 0.5 - Math.random());
+        const mockResults = shuffled.slice(0, Math.floor(Math.random() * 8) + 4);
+        resolve(mockResults);
+      }, 2000);
     });
   }
 

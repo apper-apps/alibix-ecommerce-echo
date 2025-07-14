@@ -37,7 +37,7 @@ const Header = () => {
             <SearchBar />
           </div>
 
-          {/* Desktop Actions */}
+{/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-4">
             {/* Language Toggle */}
             <Button
@@ -47,6 +47,17 @@ const Header = () => {
               className="text-xs"
             >
               {language === "ur" ? "EN" : "اردو"}
+            </Button>
+
+            {/* Camera Search */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate("/search")}
+              className="hover:text-accent transition-colors"
+              title={language === "ur" ? "کیمرہ سے تلاش کریں" : "Search with camera"}
+            >
+              <ApperIcon name="Camera" className="w-5 h-5" />
             </Button>
 
             {/* Cart */}
@@ -129,23 +140,36 @@ const Header = () => {
                 >
                   {language === "ur" ? "English" : "اردو"}
                 </Button>
+<div className="flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    onClick={() => {
+                      navigate("/search");
+                      setIsMenuOpen(false);
+                    }}
+                    className="text-accent"
+                    title={language === "ur" ? "کیمرہ سے تلاش کریں" : "Camera search"}
+                  >
+                    <ApperIcon name="Camera" className="w-4 h-4" />
+                  </Button>
 
-                <Button
-                  variant="secondary"
-                  onClick={() => {
-                    navigate("/cart");
-                    setIsMenuOpen(false);
-                  }}
-                  className="relative"
-                >
-                  <ApperIcon name="ShoppingCart" className="w-4 h-4 mr-2" />
-                  {language === "ur" ? "کارٹ" : "Cart"}
-                  {cartItemsCount > 0 && (
-                    <span className="ml-2 bg-accent text-black rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
-                      {cartItemsCount}
-                    </span>
-                  )}
-                </Button>
+                  <Button
+                    variant="secondary"
+                    onClick={() => {
+                      navigate("/cart");
+                      setIsMenuOpen(false);
+                    }}
+                    className="relative"
+                  >
+                    <ApperIcon name="ShoppingCart" className="w-4 h-4 mr-2" />
+                    {language === "ur" ? "کارٹ" : "Cart"}
+                    {cartItemsCount > 0 && (
+                      <span className="ml-2 bg-accent text-black rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+                        {cartItemsCount}
+                      </span>
+                    )}
+                  </Button>
+                </div>
               </div>
             </motion.div>
           </motion.div>
