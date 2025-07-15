@@ -95,11 +95,16 @@ async getFeatured() {
     });
   }
 
-  create(product) {
+create(product) {
     return new Promise((resolve) => {
       setTimeout(() => {
         const newId = Math.max(...this.products.map(p => p.Id)) + 1;
-        const newProduct = { ...product, Id: newId };
+        const newProduct = { 
+          ...product, 
+          Id: newId,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        };
         this.products.push(newProduct);
         resolve({ ...newProduct });
       }, 300);
@@ -111,7 +116,11 @@ async getFeatured() {
       setTimeout(() => {
         const index = this.products.findIndex(p => p.Id === parseInt(id));
         if (index !== -1) {
-          this.products[index] = { ...this.products[index], ...data };
+          this.products[index] = { 
+            ...this.products[index], 
+            ...data,
+            updatedAt: new Date().toISOString()
+          };
           resolve({ ...this.products[index] });
         } else {
           reject(new Error("Product not found"));
@@ -131,6 +140,29 @@ async getFeatured() {
           reject(new Error("Product not found"));
         }
       }, 300);
+    });
+  }
+
+  async updateStock(id, quantity) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const index = this.products.findIndex(p => p.Id === parseInt(id));
+        if (index !== -1) {
+          this.products[index].stock = Math.max(0, quantity);
+          resolve({ ...this.products[index] });
+        } else {
+          reject(new Error("Product not found"));
+        }
+      }, 200);
+    });
+  }
+
+  async getSoldOutProducts() {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const soldOut = this.products.filter(p => p.stock === 0);
+        resolve([...soldOut]);
+      }, 250);
     });
   }
 }

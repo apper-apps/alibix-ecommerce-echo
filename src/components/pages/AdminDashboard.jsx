@@ -11,11 +11,11 @@ import { toast } from 'react-toastify';
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const { user, logout, isAdmin } = useAuth();
-  const [stats, setStats] = useState({
-    totalUsers: 156,
+const [stats, setStats] = useState({
+    totalSales: 125000,
     totalProducts: 89,
-    totalOrders: 45,
-    revenue: 125000
+    pendingOrders: 12,
+    totalCustomers: 156
   });
 
   useEffect(() => {
@@ -34,41 +34,43 @@ const AdminDashboard = () => {
     }
   };
 
-  const quickActions = [
+const quickActions = [
     {
-      title: 'Manage Users',
-      description: 'View and manage user accounts',
-      icon: 'Users',
-      color: 'bg-blue-500/20 text-blue-400',
-      action: () => navigate('/admin/users')
-    },
-    {
-      title: 'Manage Products',
-      description: 'Add, edit, or remove products',
+      title: 'Product Management',
+      description: 'Add, edit products with bilingual support',
       icon: 'Package',
       color: 'bg-green-500/20 text-green-400',
       action: () => navigate('/admin/products')
     },
     {
-      title: 'View Orders',
-      description: 'Monitor and process orders',
+      title: 'Order Management',
+      description: 'Update order status and track payments',
       icon: 'ShoppingCart',
       color: 'bg-orange-500/20 text-orange-400',
       action: () => navigate('/admin/orders')
     },
     {
-      title: 'Analytics',
-      description: 'View sales and performance metrics',
+      title: 'Sales Analytics',
+      description: 'View sales by category and performance',
       icon: 'BarChart3',
       color: 'bg-purple-500/20 text-purple-400',
       action: () => navigate('/admin/analytics')
+    },
+    {
+      title: 'Customer Management',
+      description: 'Manage customer accounts and data',
+      icon: 'Users',
+      color: 'bg-blue-500/20 text-blue-400',
+      action: () => navigate('/admin/customers')
     }
   ];
 
-  const recentOrders = [
-    { id: 'ORD-001', customer: 'Ahmed Khan', amount: 15600, status: 'Pending' },
-    { id: 'ORD-002', customer: 'Sara Ali', amount: 8900, status: 'Shipped' },
-    { id: 'ORD-003', customer: 'Hassan Shah', amount: 4500, status: 'Delivered' }
+const recentOrders = [
+    { id: 'ORD-001', customer: 'Ahmed Khan', amount: 15600, status: 'Pending', paymentMethod: 'COD' },
+    { id: 'ORD-002', customer: 'Sara Ali', amount: 8900, status: 'Shipped', paymentMethod: 'Bank' },
+    { id: 'ORD-003', customer: 'Hassan Shah', amount: 4500, status: 'Delivered', paymentMethod: 'JazzCash' },
+    { id: 'ORD-004', customer: 'Fatima Malik', amount: 12300, status: 'Packed', paymentMethod: 'COD' },
+    { id: 'ORD-005', customer: 'Omar Siddiqui', amount: 6700, status: 'Pending', paymentMethod: 'Bank' }
   ];
 
   return (
@@ -115,50 +117,50 @@ const AdminDashboard = () => {
         transition={{ delay: 0.1 }}
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
       >
-        <Card className="p-6">
+<Card className="p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-400 text-sm">Total Users</p>
-              <p className="text-2xl font-bold text-white">{stats.totalUsers}</p>
+              <p className="text-gray-400 text-sm">Total Sales</p>
+              <p className="text-2xl font-bold text-white">Rs. {stats.totalSales.toLocaleString()}</p>
             </div>
-            <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center">
-              <ApperIcon name="Users" className="w-6 h-6 text-blue-400" />
+            <div className="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center">
+              <ApperIcon name="DollarSign" className="w-6 h-6 text-green-400" />
             </div>
           </div>
         </Card>
 
-        <Card className="p-6">
+<Card className="p-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-400 text-sm">Total Products</p>
               <p className="text-2xl font-bold text-white">{stats.totalProducts}</p>
             </div>
-            <div className="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center">
-              <ApperIcon name="Package" className="w-6 h-6 text-green-400" />
+            <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center">
+              <ApperIcon name="Package" className="w-6 h-6 text-blue-400" />
             </div>
           </div>
         </Card>
 
-        <Card className="p-6">
+<Card className="p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-400 text-sm">Total Orders</p>
-              <p className="text-2xl font-bold text-white">{stats.totalOrders}</p>
+              <p className="text-gray-400 text-sm">Pending Orders</p>
+              <p className="text-2xl font-bold text-white">{stats.pendingOrders}</p>
             </div>
             <div className="w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center">
-              <ApperIcon name="ShoppingCart" className="w-6 h-6 text-orange-400" />
+              <ApperIcon name="Clock" className="w-6 h-6 text-orange-400" />
             </div>
           </div>
         </Card>
 
-        <Card className="p-6">
+<Card className="p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-400 text-sm">Revenue</p>
-              <p className="text-2xl font-bold text-white">Rs. {stats.revenue.toLocaleString()}</p>
+              <p className="text-gray-400 text-sm">Total Customers</p>
+              <p className="text-2xl font-bold text-white">{stats.totalCustomers}</p>
             </div>
             <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center">
-              <ApperIcon name="DollarSign" className="w-6 h-6 text-purple-400" />
+              <ApperIcon name="Users" className="w-6 h-6 text-purple-400" />
             </div>
           </div>
         </Card>
@@ -225,17 +227,18 @@ const AdminDashboard = () => {
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.1 * index }}
-                  className="flex items-center justify-between p-3 bg-background rounded-lg"
+className="flex items-center justify-between p-3 bg-background rounded-lg"
                 >
                   <div>
                     <p className="font-medium text-white text-sm">{order.id}</p>
                     <p className="text-xs text-gray-400">{order.customer}</p>
+                    <p className="text-xs text-accent">{order.paymentMethod}</p>
                   </div>
                   <div className="text-right">
                     <p className="font-medium text-accent text-sm">
                       Rs. {order.amount.toLocaleString()}
                     </p>
-                    <Badge variant={order.status === 'Delivered' ? 'success' : order.status === 'Shipped' ? 'info' : 'warning'} className="text-xs">
+                    <Badge variant={order.status === 'Delivered' ? 'success' : order.status === 'Shipped' ? 'info' : order.status === 'Packed' ? 'warning' : 'secondary'} className="text-xs">
                       {order.status}
                     </Badge>
                   </div>

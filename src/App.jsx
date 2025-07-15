@@ -7,6 +7,8 @@ import BottomNav from "@/components/organisms/BottomNav";
 import Header from "@/components/organisms/Header";
 import Error from "@/components/ui/Error";
 import AdminDashboard from "@/components/pages/AdminDashboard";
+import AdminProducts from "@/components/pages/AdminProducts";
+import AdminOrders from "@/components/pages/AdminOrders";
 import CheckoutPage from "@/components/pages/CheckoutPage";
 import LoginPage from "@/components/pages/LoginPage";
 import SearchPage from "@/components/pages/SearchPage";
@@ -144,11 +146,27 @@ return (
                     </ProtectedRoute>
                   } 
                 />
-                <Route 
+<Route 
                   path="/admin" 
                   element={
                     <ProtectedRoute requireAdmin={true}>
                       <AdminDashboard />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/admin/products" 
+                  element={
+                    <ProtectedRoute requireAdmin={true}>
+                      <AdminProducts />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/admin/orders" 
+                  element={
+                    <ProtectedRoute requireAdmin={true}>
+                      <AdminOrders />
                     </ProtectedRoute>
                   } 
                 />
