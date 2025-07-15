@@ -20,11 +20,13 @@ function LoginPage() {
   }, [isAuthenticated, navigate])
 
 const googleLogin = useGoogleLogin({
-    onSuccess: async (tokenResponse) => {
+onSuccess: async (tokenResponse) => {
       try {
         // Validate token response
         if (!tokenResponse?.access_token) {
-          throw new Error('Invalid token response');
+          const errorMessage = language === 'ur' ? 'غلط ٹوکن' : 'Invalid token response';
+          toast.error(errorMessage);
+          return;
         }
 
         // Fetch user info using the access token
@@ -45,14 +47,19 @@ const googleLogin = useGoogleLogin({
           throw new Error('Invalid user information received');
         }
         
-        // Create response object compatible with existing login function
-        const response = {
-          profileObj: userInfo,
-          tokenObj: tokenResponse,
+        // Create response object compatible with authService
+        const googleResponse = {
+          profileObj: {
+            email: userInfo.email,
+            name: userInfo.name,
+            imageUrl: userInfo.picture,
+            googleId: userInfo.id
+          },
+          tokenId: tokenResponse.access_token,
           accessToken: tokenResponse.access_token
         };
         
-        const userData = await login(response);
+        const userData = await login(googleResponse);
         
         if (userData?.email === 'alibix07@gmail.com') {
           toast.success(language === 'ur' ? 'ایڈمن لاگ ان کامیاب' : 'Admin login successful');

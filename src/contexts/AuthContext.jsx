@@ -30,13 +30,26 @@ export const AuthProvider = ({ children }) => {
     initAuth();
   }, []);
 
-  const login = async (googleResponse) => {
+const login = async (googleResponse) => {
     try {
+      // Validate input
+      if (!googleResponse) {
+        throw new Error('No Google response provided');
+      }
+      
       const userData = await authService.loginWithGoogle(googleResponse);
+      
+      // Validate response from authService
+      if (!userData || !userData.email) {
+        throw new Error('Invalid user data received from authentication service');
+      }
+      
       setUser(userData);
       return userData;
     } catch (error) {
       console.error('Login failed:', error);
+      // Clear any partial state on failure
+      setUser(null);
       throw error;
     }
   };
