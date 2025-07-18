@@ -119,9 +119,18 @@ function App() {
     setUser
 };
 
-return (
-    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-      <AuthProvider>
+// Validate Google OAuth client ID
+  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+  
+  if (!googleClientId) {
+    console.error('Missing VITE_GOOGLE_CLIENT_ID environment variable');
+  }
+
+  return (
+    <>
+      {googleClientId ? (
+        <GoogleOAuthProvider clientId={googleClientId}>
+          <AuthProvider>
         <AppContext.Provider value={contextValue}>
           <BrowserRouter>
           <div className={`min-h-screen bg-background text-white font-body ${language === "ur" ? "rtl" : ""}`}>
@@ -193,8 +202,18 @@ pauseOnHover
           </div>
           </BrowserRouter>
         </AppContext.Provider>
-      </AuthProvider>
-    </GoogleOAuthProvider>
+</AuthProvider>
+        </GoogleOAuthProvider>
+      ) : (
+        <div className="min-h-screen bg-background text-white font-body flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold mb-4">Configuration Error</h1>
+            <p className="text-gray-400">Google OAuth client ID is not configured.</p>
+            <p className="text-sm text-gray-500 mt-2">Please check your environment variables.</p>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
