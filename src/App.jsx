@@ -117,10 +117,10 @@ function App() {
     isInWishlist,
     user,
     setUser
-  };
+};
 
 return (
-    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || "demo-client-id"}>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <AuthProvider>
         <AppContext.Provider value={contextValue}>
           <BrowserRouter>
