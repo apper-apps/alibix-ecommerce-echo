@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { createContext, useContext, useState } from "react";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import BottomNav from "@/components/organisms/BottomNav";
 import Header from "@/components/organisms/Header";
@@ -119,79 +120,81 @@ function App() {
   };
 
 return (
-    <AuthProvider>
-      <AppContext.Provider value={contextValue}>
-        <BrowserRouter>
-        <div className={`min-h-screen bg-background text-white font-body ${language === "ur" ? "rtl" : ""}`}>
-          <Header />
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || "demo-client-id"}>
+      <AuthProvider>
+        <AppContext.Provider value={contextValue}>
+          <BrowserRouter>
+          <div className={`min-h-screen bg-background text-white font-body ${language === "ur" ? "rtl" : ""}`}>
+            <Header />
 <main className="pb-20 pt-16">
-            <AnimatePresence mode="wait">
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/categories" element={<CategoriesPage />} />
-                <Route path="/category/:categoryName" element={<CategoriesPage />} />
-                <Route path="/product/:id" element={<ProductDetailPage />} />
-                <Route path="/cart" element={<CartPage />} />
-                <Route path="/checkout" element={<CheckoutPage />} />
-                <Route path="/search" element={<SearchPage />} />
-                <Route path="/search/camera" element={<SearchPage />} />
-                <Route path="/wishlist" element={<WishlistPage />} />
-                <Route path="/account" element={<AccountPage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route 
-                  path="/profile" 
-                  element={
-                    <ProtectedRoute>
-                      <ProfilePage />
-                    </ProtectedRoute>
-                  } 
-                />
+              <AnimatePresence mode="wait">
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/categories" element={<CategoriesPage />} />
+                  <Route path="/category/:categoryName" element={<CategoriesPage />} />
+                  <Route path="/product/:id" element={<ProductDetailPage />} />
+                  <Route path="/cart" element={<CartPage />} />
+                  <Route path="/checkout" element={<CheckoutPage />} />
+                  <Route path="/search" element={<SearchPage />} />
+                  <Route path="/search/camera" element={<SearchPage />} />
+                  <Route path="/wishlist" element={<WishlistPage />} />
+                  <Route path="/account" element={<AccountPage />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route 
+                    path="/profile" 
+                    element={
+                      <ProtectedRoute>
+                        <ProfilePage />
+                      </ProtectedRoute>
+                    } 
+                  />
 <Route 
-                  path="/admin" 
-                  element={
-                    <ProtectedRoute requireAdmin={true}>
-                      <AdminDashboard />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/admin/products" 
-                  element={
-                    <ProtectedRoute requireAdmin={true}>
-                      <AdminProducts />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/admin/orders" 
-                  element={
-                    <ProtectedRoute requireAdmin={true}>
-                      <AdminOrders />
-                    </ProtectedRoute>
-                  } 
-                />
-              </Routes>
-            </AnimatePresence>
-          </main>
+                    path="/admin" 
+                    element={
+                      <ProtectedRoute requireAdmin={true}>
+                        <AdminDashboard />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  <Route 
+                    path="/admin/products" 
+                    element={
+                      <ProtectedRoute requireAdmin={true}>
+                        <AdminProducts />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  <Route 
+                    path="/admin/orders" 
+                    element={
+                      <ProtectedRoute requireAdmin={true}>
+                        <AdminOrders />
+                      </ProtectedRoute>
+                    } 
+                  />
+                </Routes>
+              </AnimatePresence>
+            </main>
 
-          <BottomNav />
+            <BottomNav />
 
-          <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop
-            closeOnClick
-            rtl={language === "ur"}
-            pauseOnFocusLoss
-            draggable
+            <ToastContainer
+              position="top-right"
+              autoClose={3000}
+              hideProgressBar={false}
+              newestOnTop
+              closeOnClick
+              rtl={language === "ur"}
+              pauseOnFocusLoss
+              draggable
 pauseOnHover
-            className="z-[9999]"
-          />
-        </div>
-        </BrowserRouter>
-      </AppContext.Provider>
-    </AuthProvider>
+              className="z-[9999]"
+            />
+          </div>
+          </BrowserRouter>
+        </AppContext.Provider>
+      </AuthProvider>
+    </GoogleOAuthProvider>
   );
 }
 
